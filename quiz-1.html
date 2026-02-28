@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Moçambique & Mundo</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<!-- ADSENSE: <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU_ID" crossorigin="anonymous"></script> -->
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#06070f;--surface:#0e1020;--card:#131527;--border:rgba(255,255,255,0.07);--accent:#f9c22e;--accent2:#ff5e5e;--blue:#4a9eff;--green:#2ecc71;--red:#e74c3c;--text:#eef0ff;--muted:#5a5d80;--radius:18px}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative}
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;animation:float 12s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:#f9c22e;top:-100px;left:-150px;animation-delay:0s}
+.orb2{width:400px;height:400px;background:#4a9eff;bottom:-100px;right:-100px;animation-delay:-4s}
+.orb3{width:300px;height:300px;background:#ff5e5e;top:40%;left:50%;animation-delay:-8s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-30px) scale(1.05)}66%{transform:translate(-20px,20px) scale(.97)}}
+#app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 16px 40px}
+.ad-top{width:100%;max-width:728px;padding:8px 0 10px;text-align:center}
+.ad-lbl{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.ad-slot{width:100%;height:90px;background:var(--surface);border:1px dashed rgba(255,255,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px}
+.screen{display:none;width:100%;max-width:520px}
+.screen.active{display:block;animation:slideUp .45s cubic-bezier(.22,.68,0,1.2) both}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* WELCOME */
+.hero{text-align:center;padding:40px 0 28px}
+.hero-flag{font-size:52px;animation:wave 2s ease-in-out infinite;display:inline-block;margin-bottom:16px}
+@keyframes wave{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,15vw,80px);letter-spacing:4px;line-height:1;background:linear-gradient(135deg,#f9c22e 0%,#ff9f43 50%,#ff5e5e 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.hero-sub{font-size:13px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px}
+.resume-banner{background:linear-gradient(135deg,rgba(249,194,46,.12),rgba(255,94,94,.08));border:1px solid rgba(249,194,46,.3);border-radius:var(--radius);padding:18px 20px;margin-bottom:18px;display:none;animation:pulseBorder 2s ease-in-out infinite}
+@keyframes pulseBorder{0%,100%{border-color:rgba(249,194,46,.3)}50%{border-color:rgba(249,194,46,.7)}}
+.resume-banner.show{display:block}
+.resume-title{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.resume-info{font-size:14px;color:var(--text);margin-bottom:12px}
+.resume-info span{color:var(--accent);font-weight:700}
+.resume-btns{display:flex;gap:10px}
+.btn-res{flex:1;padding:10px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+.btn-res.p{background:var(--accent);color:#0a0a0a}
+.btn-res.p:hover{background:#ffd55e;transform:translateY(-2px)}
+.btn-res.s{background:transparent;border:1.5px solid var(--border);color:var(--muted)}
+.btn-res.s:hover{border-color:var(--muted);color:var(--text)}
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 12px;text-align:center;position:relative;overflow:hidden;transition:transform .2s}
+.stat-box:hover{transform:translateY(-4px)}
+.stat-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;color:var(--accent);line-height:1}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
+.best-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.best-bar .lbl{font-size:13px;color:var(--muted)}
+.best-bar .val{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--accent)}
+.cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.cat{background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:7px 16px;font-size:12px;color:var(--muted);transition:all .2s}
+.cat:hover{border-color:var(--accent);color:var(--accent)}
+.btn-start{width:100%;padding:18px;background:linear-gradient(135deg,#f9c22e,#ff9f43);border:none;border-radius:var(--radius);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#0a0a0a;cursor:pointer;position:relative;overflow:hidden;transition:all .25s;box-shadow:0 8px 32px rgba(249,194,46,.3)}
+.btn-start:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(249,194,46,.45)}
+
+/* QUIZ */
+.quiz-topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 0 14px}
+.q-pill{background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--muted)}
+.score-pill{background:linear-gradient(135deg,rgba(249,194,46,.15),rgba(255,158,67,.1));border:1px solid rgba(249,194,46,.4);border-radius:99px;padding:6px 16px;font-size:14px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:6px}
+.prog-wrap{height:5px;background:var(--surface);border-radius:99px;overflow:hidden;margin-bottom:16px}
+.prog-fill{height:100%;background:linear-gradient(90deg,#f9c22e,#ff9f43);border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.timer-area{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px}
+.timer-wrap{position:relative;width:60px;height:60px;flex-shrink:0}
+.timer-wrap svg{transform:rotate(-90deg)}
+.timer-wrap circle{fill:none;stroke-width:5}
+.t-bg{stroke:var(--surface)}
+.t-fg{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:163;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .3s}
+.timer-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px}
+.streak-badge{background:linear-gradient(135deg,rgba(249,194,46,.15),rgba(255,94,94,.1));border:1px solid rgba(249,194,46,.3);border-radius:12px;padding:8px 16px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.streak-badge .fire{font-size:18px}
+.streak-count{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent)}
+.quiz-ad-inline{margin-bottom:12px;text-align:center;display:none}
+.ad-slot-sm{width:100%;height:60px;background:var(--surface);border:1px dashed rgba(255,255,255,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px}
+.q-card{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:28px 24px;margin-bottom:16px;min-height:120px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;box-shadow:0 4px 40px rgba(0,0,0,.4)}
+.q-card::before{content:'';position:absolute;top:-1px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(249,194,46,.4),transparent)}
+.q-card::after{content:attr(data-num);position:absolute;right:-10px;bottom:-20px;font-family:'Bebas Neue',sans-serif;font-size:130px;line-height:1;color:rgba(255,255,255,0.025);pointer-events:none}
+.q-text{font-size:clamp(17px,4vw,21px);font-weight:700;text-align:center;line-height:1.45;position:relative;z-index:1}
+.opts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.opt{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:15px 18px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:500;color:var(--text);transition:all .18s ease;text-align:left;width:100%;position:relative;overflow:hidden}
+.opt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);opacity:0;transition:opacity .18s;border-radius:3px 0 0 3px}
+.opt:hover:not(:disabled){border-color:rgba(249,194,46,.5);transform:translateX(5px);background:rgba(249,194,46,.05)}
+.opt:hover:not(:disabled)::before{opacity:1}
+.opt:disabled{cursor:not-allowed}
+.opt-letter{min-width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:1px;transition:all .18s;flex-shrink:0}
+.opt.correct{background:rgba(46,204,113,.1);border-color:var(--green);transform:translateX(6px);animation:correctPop .4s ease}
+.opt.correct .opt-letter{background:var(--green);color:#000}
+.opt.wrong{background:rgba(231,76,60,.1);border-color:var(--red)}
+.opt.wrong .opt-letter{background:var(--red);color:#fff}
+.opt.reveal{opacity:.45}
+@keyframes correctPop{0%{transform:translateX(6px) scale(1)}40%{transform:translateX(6px) scale(1.03)}100%{transform:translateX(6px) scale(1)}}
+.btn-next{width:100%;padding:16px;background:var(--accent);border:none;border-radius:14px;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:#0a0a0a;cursor:pointer;display:none;transition:all .2s;box-shadow:0 4px 20px rgba(249,194,46,.25)}
+.btn-next.show{display:block;animation:slideUp .3s ease}
+.btn-next:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(249,194,46,.4)}
+
+/* RESULT */
+.result-hero{text-align:center;padding:36px 0 24px}
+.result-icon{font-size:70px;display:block;margin-bottom:12px;animation:bounceIn .7s cubic-bezier(.22,.68,0,1.5) both}
+@keyframes bounceIn{0%{transform:scale(0) rotate(-20deg);opacity:0}70%{transform:scale(1.1) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
+.result-title2{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:3px;background:linear-gradient(135deg,#f9c22e,#ff9f43);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.result-sub2{font-size:14px;color:var(--muted)}
+.score-ring-wrap{display:flex;justify-content:center;margin-bottom:24px}
+.score-ring-box{position:relative;width:150px;height:150px}
+.score-ring-box svg{transform:rotate(-90deg)}
+.score-ring-box circle{fill:none;stroke-width:10}
+.sr-bg{stroke:var(--surface)}
+.sr-fg{stroke:url(#rg);stroke-linecap:round;stroke-dasharray:408;stroke-dashoffset:408;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1) .3s}
+.score-ring-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-ring-num{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;color:var(--accent);line-height:1}
+.score-ring-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.new-record{background:linear-gradient(135deg,rgba(249,194,46,.15),rgba(255,94,94,.08));border:1px solid rgba(249,194,46,.4);border-radius:14px;padding:14px 20px;text-align:center;margin-bottom:16px;font-size:13px;color:var(--accent);font-weight:700;letter-spacing:1px;text-transform:uppercase;display:none;animation:glow 1.5s ease-in-out infinite alternate}
+@keyframes glow{from{box-shadow:0 0 10px rgba(249,194,46,.2)}to{box-shadow:0 0 25px rgba(249,194,46,.5)}}
+.new-record.show{display:block}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.r-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center}
+.r-box-num{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;margin-bottom:4px}
+.r-box-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.result-ad{width:100%;height:90px;background:var(--surface);border:1px dashed rgba(255,255,255,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;margin-bottom:16px}
+.btn-again{width:100%;padding:18px;background:linear-gradient(135deg,#f9c22e,#ff9f43);border:none;border-radius:var(--radius);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#0a0a0a;cursor:pointer;transition:all .2s;margin-bottom:10px;box-shadow:0 6px 28px rgba(249,194,46,.3)}
+.btn-again:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(249,194,46,.45)}
+.btn-share{width:100%;padding:14px;background:transparent;border:1.5px solid var(--border);border-radius:var(--radius);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+.btn-share:hover{border-color:var(--accent);color:var(--accent)}
+
+/* INTERSTITIAL */
+.interstitial{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.93);align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.interstitial.show{display:flex;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.inter-box{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:28px 24px;width:90%;max-width:360px;text-align:center;animation:slideUp .4s cubic-bezier(.22,.68,0,1.2) both}
+.inter-slot{width:100%;height:250px;background:var(--surface);border:1px dashed rgba(255,255,255,.08);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;margin-bottom:18px}
+.inter-prog{height:3px;background:var(--surface);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.inter-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;width:0;transition:width 1s linear}
+.inter-cd{font-size:12px;color:var(--muted);margin-bottom:14px}
+.btn-skip{width:100%;padding:11px;background:transparent;border:1.5px solid var(--border);border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+.btn-skip:not(:disabled):hover{border-color:var(--accent);color:var(--accent)}
+.btn-skip:disabled{opacity:.4;cursor:not-allowed}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 22px;font-size:14px;font-weight:600;transition:transform .35s cubic-bezier(.22,.68,0,1.2);z-index:300;white-space:nowrap;pointer-events:none}
+.toast.up{transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:var(--green);color:var(--green)}
+.toast.err{border-color:var(--red);color:var(--red)}
+.toast.info{border-color:var(--accent);color:var(--accent)}
+
+/* COMBO */
+.combo-pop{position:fixed;top:30%;left:50%;transform:translate(-50%,-50%) scale(0);font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:4px;color:var(--accent);pointer-events:none;z-index:400;text-shadow:0 0 30px rgba(249,194,46,.8)}
+.combo-pop.boom{animation:comboBoom .8s cubic-bezier(.22,.68,0,1.2) forwards}
+@keyframes comboBoom{0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg);opacity:1}40%{transform:translate(-50%,-50%) scale(1.2) rotate(3deg);opacity:1}70%{transform:translate(-50%,-50%) scale(1) rotate(0);opacity:1}100%{transform:translate(-50%,-60%) scale(.8);opacity:0}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--surface);border-radius:99px}
+</style>
+</head>
+<body>
+<div class="bg-orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+
+<!-- SVG gradiente do anel -->
+<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f9c22e"/><stop offset="100%" stop-color="#ff9f43"/></linearGradient></defs></svg>
+
+<!-- INTERSTITIAL -->
+<div class="interstitial" id="interstitial">
+  <div class="inter-box">
+    <div class="ad-lbl" style="margin-bottom:10px">Publicidade</div>
+    <div class="inter-slot"><!-- Cole aqui AdSense 300x250 -->📢 Anúncio (300×250)</div>
+    <div class="inter-prog"><div class="inter-fill" id="interFill"></div></div>
+    <div class="inter-cd" id="interCd">Aguarde 5s…</div>
+    <button class="btn-skip" id="btnSkip" disabled onclick="closeInter()">Fechar anúncio</button>
+  </div>
+</div>
+
+<!-- TOAST & COMBO -->
+<div class="toast" id="toast"></div>
+<div class="combo-pop" id="comboPop"></div>
+
+<div id="app">
+  <!-- AD TOP -->
+  <div class="ad-top">
+    <div class="ad-lbl">Publicidade</div>
+    <div class="ad-slot"><!-- Cole aqui AdSense 728x90 -->📢 Banner (728×90)</div>
+  </div>
+
+  <!-- WELCOME -->
+  <div class="screen active" id="s-welcome">
+    <div class="hero">
+      <div class="hero-flag">🇲🇿</div>
+      <div class="hero-title">QUIZ</div>
+      <div class="hero-sub">Moçambique &amp; Mundo • 67 Perguntas</div>
+    </div>
+    <div class="resume-banner" id="resumeBanner">
+      <div class="resume-title">🔁 Jogo guardado encontrado!</div>
+      <div class="resume-info" id="resumeInfo">Estava na pergunta <span id="resumeQ">—</span> com <span id="resumePts">—</span> pontos</div>
+      <div class="resume-btns">
+        <button class="btn-res p" onclick="resumeGame()">▶ Continuar</button>
+        <button class="btn-res s" onclick="clearSave()">Novo jogo</button>
+      </div>
+    </div>
+    <div class="stats-strip">
+      <div class="stat-box"><div class="stat-num">67</div><div class="stat-lbl">Perguntas</div></div>
+      <div class="stat-box"><div class="stat-num">15s</div><div class="stat-lbl">Por questão</div></div>
+      <div class="stat-box"><div class="stat-num">+5</div><div class="stat-lbl">Bónus combo</div></div>
+    </div>
+    <div class="best-bar" id="bestBar" style="display:none">
+      <span class="lbl">🏆 Melhor pontuação</span>
+      <span class="val" id="bestVal">—</span>
+    </div>
+    <div class="cats">
+      <span class="cat">🇲🇿 Moçambique</span><span class="cat">🌍 Geografia</span>
+      <span class="cat">🔬 Ciência</span><span class="cat">📜 História</span>
+      <span class="cat">🎨 Cultura</span><span class="cat">➗ Matemática</span>
+    </div>
+    <button class="btn-start" onclick="startFresh()">INICIAR QUIZ →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="s-quiz">
+    <div class="quiz-topbar">
+      <div class="q-pill" id="qPill">1 / 67</div>
+      <div class="score-pill">⭐ <span id="scoreLive">0</span> pts</div>
+    </div>
+    <div class="prog-wrap"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="timer-area">
+      <div class="timer-wrap">
+        <svg width="60" height="60" viewBox="0 0 60 60">
+          <circle class="t-bg" cx="30" cy="30" r="26"/>
+          <circle class="t-fg" id="timerArc" cx="30" cy="30" r="26"/>
+        </svg>
+        <div class="timer-val" id="timerVal">15</div>
+      </div>
+      <div class="streak-badge">
+        <span class="fire">🔥</span>
+        <span class="streak-count" id="streakCount">0</span>
+        <span style="font-size:11px;color:var(--muted)">sequência</span>
+      </div>
+    </div>
+    <div class="quiz-ad-inline" id="quizAdInline">
+      <div class="ad-lbl" style="margin-bottom:4px">Publicidade</div>
+      <div class="ad-slot-sm"><!-- Cole aqui AdSense 320x50 -->📢 Anúncio (320×50)</div>
+    </div>
+    <div class="q-card" id="qCard" data-num="1"><div class="q-text" id="qText">A carregar…</div></div>
+    <div class="opts" id="opts"></div>
+    <button class="btn-next" id="btnNext" onclick="nextQ()">PRÓXIMA →</button>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="s-result">
+    <div class="result-hero">
+      <span class="result-icon" id="resIcon">🏆</span>
+      <div class="result-title2" id="resTitle">EXCELENTE!</div>
+      <div class="result-sub2" id="resSub">Quiz completo</div>
+    </div>
+    <div class="score-ring-wrap">
+      <div class="score-ring-box">
+        <svg width="150" height="150" viewBox="0 0 150 150">
+          <circle class="sr-bg" cx="75" cy="75" r="65"/>
+          <circle class="sr-fg" id="ringFg" cx="75" cy="75" r="65"/>
+        </svg>
+        <div class="score-ring-val">
+          <div class="score-ring-num" id="ringScore">0</div>
+          <div class="score-ring-lbl">pontos</div>
+        </div>
+      </div>
+    </div>
+    <div class="new-record" id="newRecord">🎉 NOVO RECORDE PESSOAL!</div>
+    <div class="result-grid">
+      <div class="r-box"><div class="r-box-num" id="rCorrect" style="color:var(--green)">0</div><div class="r-box-lbl">✅ Corretas</div></div>
+      <div class="r-box"><div class="r-box-num" id="rWrong" style="color:var(--red)">0</div><div class="r-box-lbl">❌ Erradas</div></div>
+      <div class="r-box"><div class="r-box-num" id="rPct" style="color:var(--accent)">0%</div><div class="r-box-lbl">📊 Acertos</div></div>
+      <div class="r-box"><div class="r-box-num" id="rBest" style="color:var(--blue)">0</div><div class="r-box-lbl">🏆 Recorde</div></div>
+    </div>
+    <div class="ad-lbl" style="margin-bottom:6px">Publicidade</div>
+    <div class="result-ad"><!-- Cole aqui AdSense 320x100 -->📢 Anúncio (320×100)</div>
+    <button class="btn-again" onclick="startFresh()">🔄 JOGAR NOVAMENTE</button>
+    <button class="btn-share" onclick="shareResult()">📤 Partilhar resultado</button>
+  </div>
+</div>
+
+<script>
+const ALL_Q=[
+  {c:"🇲🇿 Moçambique",q:"Qual é a capital de Moçambique?",o:["Beira","Nampula","Maputo","Quelimane"],a:2},
+  {c:"🇲🇿 Moçambique",q:"Em que ano Moçambique ganhou a independência?",o:["1964","1970","1975","1980"],a:2},
+  {c:"🇲🇿 Moçambique",q:"De qual país Moçambique se tornou independente?",o:["França","Espanha","Inglaterra","Portugal"],a:3},
+  {c:"🇲🇿 Moçambique",q:"Qual é a moeda oficial de Moçambique?",o:["Kwanza","Rand","Metical","Escudo"],a:2},
+  {c:"🇲🇿 Moçambique",q:"Qual é o maior lago de Moçambique?",o:["Lago Niassa","Lago Cahora Bassa","Lago Chiuta","Lago Amaramba"],a:0},
+  {c:"🇲🇿 Moçambique",q:"Qual é o rio mais longo de Moçambique?",o:["Rio Save","Rio Limpopo","Rio Zambeze","Rio Rovuma"],a:2},
+  {c:"🇲🇿 Moçambique",q:"Quem foi o primeiro presidente de Moçambique?",o:["Armando Guebuza","Joaquim Chissano","Samora Machel","Filipe Nyusi"],a:2},
+  {c:"🇲🇿 Moçambique",q:"Qual é a língua oficial de Moçambique?",o:["Inglês","Suaíli","Francês","Português"],a:3},
+  {c:"🇲🇿 Moçambique",q:"Em que continente fica Moçambique?",o:["Ásia","América","Europa","África"],a:3},
+  {c:"🇲🇿 Moçambique",q:"Qual é a segunda maior cidade de Moçambique?",o:["Maputo","Quelimane","Beira","Nampula"],a:3},
+  {c:"🇲🇿 Moçambique",q:"Qual oceano banha a costa de Moçambique?",o:["Atlântico","Índico","Pacífico","Ártico"],a:1},
+  {c:"🇲🇿 Moçambique",q:"Qual organização lutou pela independência de Moçambique?",o:["MPLA","ZANU","FRELIMO","ANC"],a:2},
+  {c:"🇲🇿 Moçambique",q:"Quantas províncias tem Moçambique?",o:["8","9","10","11"],a:3},
+  {c:"🇲🇿 Moçambique",q:"Qual é o ponto mais alto de Moçambique?",o:["Monte Binga","Monte Namuli","Serra Choa","Monte Zembe"],a:0},
+  {c:"🇲🇿 Moçambique",q:"Com quantos países Moçambique faz fronteira?",o:["4","5","6","7"],a:2},
+  {c:"🌍 Geografia",q:"Qual é a capital do Brasil?",o:["São Paulo","Brasília","Rio de Janeiro","Salvador"],a:1},
+  {c:"🌍 Geografia",q:"Qual é o maior oceano do mundo?",o:["Atlântico","Índico","Ártico","Pacífico"],a:3},
+  {c:"🌍 Geografia",q:"Qual é o rio mais longo do mundo?",o:["Amazonas","Nilo","Yangtzé","Mississippi"],a:1},
+  {c:"🌍 Geografia",q:"Qual é a montanha mais alta do mundo?",o:["K2","Monte Everest","Kilimanjaro","Mont Blanc"],a:1},
+  {c:"🌍 Geografia",q:"Em qual país fica a Torre Eiffel?",o:["Itália","Espanha","França","Alemanha"],a:2},
+  {c:"🌍 Geografia",q:"Qual é o menor país do mundo?",o:["Mônaco","San Marino","Vaticano","Liechtenstein"],a:2},
+  {c:"🌍 Geografia",q:"Qual é o país com maior território do mundo?",o:["China","EUA","Canadá","Rússia"],a:3},
+  {c:"🌍 Geografia",q:"Qual é a capital da Austrália?",o:["Sydney","Melbourne","Canberra","Brisbane"],a:2},
+  {c:"🌍 Geografia",q:"Qual é o deserto mais quente do mundo?",o:["Saara","Gobi","Atacama","Arábico"],a:0},
+  {c:"🌍 Geografia",q:"Qual continente tem mais países?",o:["Ásia","Europa","África","América"],a:2},
+  {c:"🌍 Geografia",q:"Qual é o lago mais profundo do mundo?",o:["Titicaca","Baikal","Superior","Vitória"],a:1},
+  {c:"🌍 Geografia",q:"Qual é a capital da Argentina?",o:["Córdoba","Montevidéu","Buenos Aires","Santiago"],a:2},
+  {c:"🌍 Geografia",q:"Qual é a capital do Japão?",o:["Osaka","Tóquio","Quioto","Hiroshima"],a:1},
+  {c:"🌍 Geografia",q:"Qual é o país mais populoso da Europa?",o:["França","Alemanha","Rússia","Reino Unido"],a:2},
+  {c:"🌍 Geografia",q:"Em qual país fica o Canal do Panamá?",o:["México","Colômbia","Costa Rica","Panamá"],a:3},
+  {c:"🔬 Ciência",q:"Quantos planetas existem no Sistema Solar?",o:["7","9","8","10"],a:2},
+  {c:"🔬 Ciência",q:"Qual é o elemento químico representado por 'O'?",o:["Ouro","Oxigênio","Osmio","Ósmio"],a:1},
+  {c:"🔬 Ciência",q:"Qual é a velocidade da luz (aprox.)?",o:["200.000 km/s","300.000 km/s","150.000 km/s","450.000 km/s"],a:1},
+  {c:"🔬 Ciência",q:"Qual é o metal mais abundante na crosta terrestre?",o:["Ferro","Alumínio","Cobre","Zinco"],a:1},
+  {c:"🔬 Ciência",q:"Quantos ossos tem o corpo humano adulto?",o:["206","215","198","220"],a:0},
+  {c:"🔬 Ciência",q:"Qual planeta é o 'Planeta Vermelho'?",o:["Júpiter","Saturno","Marte","Vênus"],a:2},
+  {c:"🔬 Ciência",q:"Qual é o gás mais abundante na atmosfera terrestre?",o:["Oxigênio","CO₂","Nitrogênio","Argônio"],a:2},
+  {c:"🔬 Ciência",q:"Quantos cromossomos tem uma célula humana normal?",o:["23","44","46","48"],a:2},
+  {c:"🔬 Ciência",q:"Qual é o símbolo químico do ouro?",o:["Go","Or","Ou","Au"],a:3},
+  {c:"🔬 Ciência",q:"Qual órgão produz insulina?",o:["Fígado","Rim","Pâncreas","Baço"],a:2},
+  {c:"🔬 Ciência",q:"Qual é o planeta mais próximo do Sol?",o:["Vênus","Marte","Mercúrio","Terra"],a:2},
+  {c:"🔬 Ciência",q:"O que estuda a Sismologia?",o:["Insetos","Mares","Terremotos","Fungos"],a:2},
+  {c:"🔬 Ciência",q:"Qual é o ácido presente no estômago?",o:["Ác. Sulfúrico","Ác. Clorídrico","Ác. Nítrico","Ác. Acético"],a:1},
+  {c:"🔬 Ciência",q:"Qual é o planeta com os maiores anéis?",o:["Júpiter","Urano","Netuno","Saturno"],a:3},
+  {c:"🔬 Ciência",q:"Quantas horas a Terra leva para girar em torno de si?",o:["12h","24h","36h","48h"],a:1},
+  {c:"📜 História",q:"Em que ano o homem pisou na lua pela 1ª vez?",o:["1965","1972","1969","1971"],a:2},
+  {c:"📜 História",q:"Em que ano foi descoberto o Brasil?",o:["1492","1500","1510","1488"],a:1},
+  {c:"📜 História",q:"Quem foi o primeiro presidente dos EUA?",o:["Abraham Lincoln","Thomas Jefferson","George Washington","John Adams"],a:2},
+  {c:"📜 História",q:"Em que ano terminou a Segunda Guerra Mundial?",o:["1943","1944","1945","1946"],a:2},
+  {c:"📜 História",q:"Em que ano caiu o Muro de Berlim?",o:["1987","1988","1989","1990"],a:2},
+  {c:"📜 História",q:"Qual civilização construiu as pirâmides de Gizé?",o:["Romana","Grega","Egípcia","Mesopotâmica"],a:2},
+  {c:"📜 História",q:"Quem descobriu a América em 1492?",o:["Américo Vespúcio","Cristóvão Colombo","Vasco da Gama","Pedro Álvares"],a:1},
+  {c:"📜 História",q:"Qual guerra terminou com o Tratado de Versalhes?",o:["Guerra Fria","Segunda Guerra","Primeira Guerra Mundial","Guerra dos 30 Anos"],a:2},
+  {c:"📜 História",q:"Quem foi Napoleão Bonaparte?",o:["Rei da Espanha","Imperador da França","General inglês","Czar da Rússia"],a:1},
+  {c:"📜 História",q:"Em que país ocorreu a Revolução Francesa?",o:["Inglaterra","Itália","Alemanha","França"],a:3},
+  {c:"🎨 Cultura",q:"Quem pintou a Mona Lisa?",o:["Michelangelo","Rafael","Leonardo da Vinci","Picasso"],a:2},
+  {c:"🎨 Cultura",q:"Quem escreveu 'Dom Quixote'?",o:["Shakespeare","Cervantes","Dante","Homero"],a:1},
+  {c:"🎨 Cultura",q:"Quem compôs a 'Quinta Sinfonia'?",o:["Mozart","Bach","Beethoven","Vivaldi"],a:2},
+  {c:"🎨 Cultura",q:"Quem escreveu 'Romeu e Julieta'?",o:["Cervantes","Dante","Shakespeare","Dickens"],a:2},
+  {c:"🎨 Cultura",q:"Quem escreveu '1984'?",o:["Aldous Huxley","George Orwell","Ray Bradbury","H.G. Wells"],a:1},
+  {c:"🎨 Cultura",q:"Em que país nasceu Pablo Picasso?",o:["França","Portugal","Itália","Espanha"],a:3},
+  {c:"🎨 Cultura",q:"Quem escreveu 'O Senhor dos Anéis'?",o:["C.S. Lewis","J.K. Rowling","J.R.R. Tolkien","G.R.R. Martin"],a:2},
+  {c:"🎨 Cultura",q:"A obra no teto da Capela Sistina chama-se?",o:["A Última Ceia","O Nascimento de Vênus","A Criação de Adão","A Escola de Atenas"],a:2},
+  {c:"➗ Matemática",q:"Quantos lados tem um hexágono?",o:["5","7","6","8"],a:2},
+  {c:"➗ Matemática",q:"Qual é o resultado de 12 × 12?",o:["124","134","144","154"],a:2},
+  {c:"➗ Matemática",q:"Quantos graus tem um triângulo?",o:["90°","180°","270°","360°"],a:1},
+  {c:"➗ Matemática",q:"Qual é o número pi (aprox.)?",o:["3,14","2,71","1,61","4,13"],a:0},
+  {c:"➗ Matemática",q:"Qual é a raiz quadrada de 144?",o:["11","12","13","14"],a:1},
+  {c:"➗ Matemática",q:"Quantos zeros tem um bilhão?",o:["6","8","9","12"],a:2}
+];
+
+const SAVE_KEY='qz_save', BEST_KEY='qz_best', LETTERS=['A','B','C','D'];
+let questions=[],cur=0,score=0,streak=0,correct=0,wrong=0,answered=false,timerInt=null,timeLeft=15,interCb=null,toastTm=null,interTm=null;
+
+/* ── Storage ── */
+function saveProgress(){
+  localStorage.setItem(SAVE_KEY,JSON.stringify({
+    idx:questions.map(q=>ALL_Q.indexOf(q)),
+    cur,score,streak,correct,wrong
+  }));
+}
+function loadProgress(){
+  try{const d=JSON.parse(localStorage.getItem(SAVE_KEY));if(!d||d.cur>=d.idx.length)return null;return d;}catch{return null;}
+}
+function clearSave(){localStorage.removeItem(SAVE_KEY);document.getElementById('resumeBanner').classList.remove('show');startFresh();}
+function getBest(){return parseInt(localStorage.getItem(BEST_KEY)||'0');}
+function setBest(v){localStorage.setItem(BEST_KEY,String(v));}
+
+/* ── Init ── */
+window.onload=()=>{
+  const best=getBest();
+  if(best>0){document.getElementById('bestBar').style.display='flex';document.getElementById('bestVal').textContent=best+' pts';}
+  const saved=loadProgress();
+  if(saved){
+    document.getElementById('resumeBanner').classList.add('show');
+    document.getElementById('resumeQ').textContent=saved.cur+1;
+    document.getElementById('resumePts').textContent=saved.score;
+  }
+};
+
+function shuffle(a){return[...a].sort(()=>Math.random()-.5);}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active');s.style.display='none';});
+  const el=document.getElementById(id);el.style.display='block';void el.offsetWidth;el.classList.add('active');
+}
+
+/* ── Game ── */
+function startFresh(){
+  localStorage.removeItem(SAVE_KEY);
+  questions=shuffle(ALL_Q);
+  cur=0;score=0;streak=0;correct=0;wrong=0;
+  showScreen('s-quiz');loadQuestion();
+}
+
+function resumeGame(){
+  const d=loadProgress();if(!d){startFresh();return;}
+  questions=d.idx.map(i=>ALL_Q[i]);
+  cur=d.cur;score=d.score;streak=d.streak||0;correct=d.correct||0;wrong=d.wrong||0;
+  showScreen('s-quiz');loadQuestion();
+}
+
+function loadQuestion(){
+  if(cur>=questions.length){showResult();return;}
+  answered=false;
+  const q=questions[cur];
+  document.getElementById('qPill').textContent=`${cur+1} / ${questions.length}`;
+  document.getElementById('scoreLive').textContent=score;
+  document.getElementById('streakCount').textContent=streak;
+  document.getElementById('progFill').style.width=`${(cur/questions.length)*100}%`;
+  document.getElementById('qText').textContent=q.q;
+  document.getElementById('qCard').dataset.num=cur+1;
+  document.getElementById('btnNext').classList.remove('show');
+  document.getElementById('quizAdInline').style.display=(cur>0&&cur%10===0)?'block':'none';
+  const c=document.getElementById('opts');c.innerHTML='';
+  q.o.forEach((t,i)=>{
+    const b=document.createElement('button');b.className='opt';
+    b.innerHTML=`<span class="opt-letter">${LETTERS[i]}</span>${t}`;
+    b.onclick=()=>checkAnswer(i);c.appendChild(b);
+  });
+  startTimer();saveProgress();
+}
+
+function startTimer(){
+  clearInterval(timerInt);timeLeft=15;updateTimerUI();
+  timerInt=setInterval(()=>{
+    timeLeft--;updateTimerUI();
+    if(timeLeft<=0){clearInterval(timerInt);if(!answered){answered=true;streak=0;wrong++;document.getElementById('streakCount').textContent=0;revealAnswer(-1);toast('⏱ Tempo esgotado!','err');document.getElementById('btnNext').classList.add('show');saveProgress();}}
+  },1000);
+}
+
+function updateTimerUI(){
+  const arc=document.getElementById('timerArc'),val=document.getElementById('timerVal');
+  arc.style.strokeDashoffset=163*(1-timeLeft/15);
+  arc.style.stroke=timeLeft<=5?'var(--red)':timeLeft<=8?'#ff9f43':'var(--accent)';
+  val.textContent=timeLeft;val.style.color=timeLeft<=5?'var(--red)':'var(--text)';
+}
+
+function checkAnswer(idx){
+  if(answered)return;answered=true;clearInterval(timerInt);
+  const isOk=idx===questions[cur].a;
+  if(isOk){
+    streak++;correct++;
+    const bonus=streak>=3?5:0;score+=10+bonus;
+    if(streak>=3)showCombo(`🔥 ×${streak} COMBO!`);
+    toast(`✅ Correto! +${10+bonus} pts`,'ok');
+  }else{streak=0;wrong++;toast('❌ Errado!','err');}
+  document.getElementById('streakCount').textContent=streak;
+  document.getElementById('scoreLive').textContent=score;
+  revealAnswer(idx);document.getElementById('btnNext').classList.add('show');saveProgress();
+}
+
+function revealAnswer(sel){
+  const corr=questions[cur].a;
+  document.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===corr)b.classList.add('correct');
+    else if(i===sel)b.classList.add('wrong');
+    else b.classList.add('reveal');
+  });
+}
+
+function nextQ(){
+  cur++;
+  if(cur>=questions.length){showResult();return;}
+  if(cur%3===0)showInterstitial(()=>loadQuestion());
+  else loadQuestion();
+}
+
+/* ── Result ── */
+function showResult(){
+  clearInterval(timerInt);localStorage.removeItem(SAVE_KEY);
+  const pct=Math.round((correct/questions.length)*100);
+  const best=getBest(),isRec=score>best;if(isRec)setBest(score);
+  let icon='📚',title='CONTINUE ASSIM!';
+  if(pct>=80){icon='🏆';title='EXCELENTE!';}
+  else if(pct>=60){icon='🥈';title='MUITO BOM!';}
+  else if(pct>=40){icon='👍';title='BOM TRABALHO!';}
+  document.getElementById('resIcon').textContent=icon;
+  document.getElementById('resTitle').textContent=title;
+  document.getElementById('resSub').textContent=`${pct}% de acertos — Quiz completo!`;
+  document.getElementById('rCorrect').textContent=correct;
+  document.getElementById('rWrong').textContent=wrong;
+  document.getElementById('rPct').textContent=pct+'%';
+  document.getElementById('rBest').textContent=(isRec?score:best)+' pts';
+  document.getElementById('ringScore').textContent=score;
+  document.getElementById('newRecord').classList.toggle('show',isRec);
+  showScreen('s-result');
+  setTimeout(()=>{document.getElementById('ringFg').style.strokeDashoffset=408*(1-pct/100);},100);
+}
+
+/* ── Interstitial ── */
+function showInterstitial(cb){
+  interCb=cb;
+  const ov=document.getElementById('interstitial'),fill=document.getElementById('interFill'),cd=document.getElementById('interCd'),skip=document.getElementById('btnSkip');
+  ov.classList.add('show');skip.disabled=true;
+  fill.style.transition='none';fill.style.width='0%';void fill.offsetWidth;
+  fill.style.transition='width 5s linear';fill.style.width='100%';
+  let s=5;cd.textContent=`Aguarde ${s}s…`;
+  clearInterval(interTm);
+  interTm=setInterval(()=>{s--;cd.textContent=s>0?`Aguarde ${s}s…`:'Pode fechar agora!';if(s<=0){clearInterval(interTm);skip.disabled=false;}},1000);
+}
+function closeInter(){document.getElementById('interstitial').classList.remove('show');clearInterval(interTm);if(interCb){interCb();interCb=null;}}
+
+/* ── Helpers ── */
+function toast(msg,type){
+  const t=document.getElementById('toast');t.textContent=msg;t.className=`toast up ${type}`;
+  clearTimeout(toastTm);toastTm=setTimeout(()=>t.className='toast',2200);
+}
+function showCombo(msg){
+  const el=document.getElementById('comboPop');el.textContent=msg;el.className='combo-pop';void el.offsetWidth;el.className='combo-pop boom';
+}
+function shareResult(){
+  const pct=Math.round((correct/questions.length)*100);
+  const txt=`🇲🇿 Quiz Moçambique & Mundo\n\nFiz ${score} pontos (${pct}% acertos)!\n\nTenta bater o meu recorde 👉 ${location.href}`;
+  if(navigator.share)navigator.share({title:'Quiz Moçambique',text:txt}).catch(()=>{});
+  else navigator.clipboard.writeText(txt).then(()=>toast('📋 Copiado!','info'));
+}
+</script>
+</body>
+</html>
